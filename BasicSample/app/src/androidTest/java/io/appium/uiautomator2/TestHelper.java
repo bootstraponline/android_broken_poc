@@ -2,8 +2,12 @@ package io.appium.uiautomator2;
 
 import android.app.Activity;
 import android.app.Instrumentation;
+import android.content.Context;
 import android.content.Intent;
+import android.net.wifi.WifiManager;
+import android.os.SystemClock;
 import android.support.test.InstrumentationRegistry;
+import android.text.format.Formatter;
 
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.OkHttpClient;
@@ -13,8 +17,8 @@ import com.squareup.okhttp.Response;
 
 import java.io.IOException;
 
+import static android.os.SystemClock.*;
 import static java.util.concurrent.TimeUnit.SECONDS;
-import static junit.framework.Assert.fail;
 
 public abstract class TestHelper {
 
@@ -40,6 +44,24 @@ public abstract class TestHelper {
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
 
+    public static final void waitForNetty() {
+        long start = elapsedRealtime();
+        boolean unsuccessful = true;
+
+        do {
+            try {
+                get("/wd/hub/status");
+                unsuccessful = false;
+            } catch (Exception e) {
+                String msg = e.getMessage();
+            }
+        } while (unsuccessful && (elapsedRealtime() - start < 5000));
+
+        if (unsuccessful) {
+            throw new RuntimeException("Failed to contact server on " + baseUrl);
+        }
+    }
+
     public static String post(final String path) {
         Request request = new Request.Builder()
                 .url(baseUrl + path)
@@ -56,7 +78,7 @@ public abstract class TestHelper {
             Response response = client.newCall(request).execute();
             result = response.body().string();
         } catch (IOException e) {
-            fail("Post \"" + request.urlString() + "\" failed. " + e.getMessage());
+            throw new RuntimeException(request.method() + " \"" + request.urlString() + "\" failed. " + e.getMessage());
         }
         return result;
     }
