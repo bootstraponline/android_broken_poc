@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
 
 import java.io.IOException;
 
+import static io.appium.uiautomator2.TestHelper.*;
 import static io.appium.uiautomator2.TestHelper.get;
 import static io.appium.uiautomator2.TestHelper.post;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -28,7 +29,8 @@ public class RoutesTest {
     // Launch main activity exactly once before all tests.
     // Don't use ActivityTestRule because that'll launch once per test.
     static {
-        TestHelper.launchActivity(MainActivity.class);
+        launchActivity(MainActivity.class);
+        waitForNetty();
     }
 
     @Test
@@ -46,6 +48,7 @@ public class RoutesTest {
     @Test
     public void getSourceTest() throws IOException { // get("/wd/hub/session/:sessionId/source", new GetSource());
         String xmlHeader = "<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>";
+
         assertThat(get("/wd/hub/session/:sessionId/source"), containsString(xmlHeader));
         assertThat(get("/wd/hub/session/12345/source"), containsString(xmlHeader));
     }
