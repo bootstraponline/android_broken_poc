@@ -36,13 +36,14 @@ public class AppiumServlet implements IHttpServlet {
         // http://stackoverflow.com/a/14773170
 
         if (command == null) {
-            httpResponse.setStatus(404).setContent("Unknown route " + method + " " + uri).end();
+            String content = "Unknown route " + method + " " + uri;
+            Log.i(content);
+            httpResponse.setStatus(404).setContent(content).end();
             return;
         }
 
         String content = command.execute(httpRequest);
-	httpResponse.setContent(content);
-        httpResponse.setStatus(200);
         Log.i("Sending content: " + content);
+        httpResponse.setStatus(200).setContent(content).end();
     }
 }
