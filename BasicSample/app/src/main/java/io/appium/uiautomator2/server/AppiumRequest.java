@@ -49,10 +49,8 @@ public class AppiumRequest implements IAppiumRequest {
      * {@inheritDoc}
      */
     @Override
-    public Optional<String> body() {
-        if (!body.isPresent())
-            body = Optional.fromNullable(request.content().toString(CharsetUtil.UTF_8));
-        return body;
+    public String body() {
+        return request.content().toString(CharsetUtil.UTF_8);
     }
 
     /**

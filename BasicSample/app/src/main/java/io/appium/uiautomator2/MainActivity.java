@@ -1,6 +1,9 @@
 package io.appium.uiautomator2;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.text.format.Formatter;
@@ -22,6 +25,11 @@ public class MainActivity extends Activity {
 
         setContentView(io.appium.uiautomator2.R.layout.activity_main);
         printIp();
+
+        // Launch the app under test as soon as MainActivity is created - hardcoded.
+        Context ctx = this;
+        Intent i = ctx.getPackageManager().getLaunchIntentForPackage("io.selendroid.testapp");
+        ctx.startActivity(i);
 
         if (serverInstrumentation == null) {
             serverInstrumentation = ServerInstrumentation.getInstance(this, port);

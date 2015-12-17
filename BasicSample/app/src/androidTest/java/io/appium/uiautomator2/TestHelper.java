@@ -65,7 +65,7 @@ public abstract class TestHelper {
     public static String post(final String path) {
         Request request = new Request.Builder()
                 .url(baseUrl + path)
-                .post(RequestBody.create(JSON, "{\"test\": true}"))
+                .post(RequestBody.create(JSON, "{\"test\": true, \"action\": \"find\", \"id\": \"Display text view\"}"))
                 .build();
 
 

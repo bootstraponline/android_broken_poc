@@ -23,7 +23,7 @@ public interface IAppiumRequest {
     /**
      * Returns the request body
      */
-    Optional<String> body();
+    String body();
 
     // Appium specific.
 

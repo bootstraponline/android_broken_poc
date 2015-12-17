@@ -34,6 +34,10 @@ android {
     jacoco {
         version '0.7.5.201505241946'
     }
+
+    lintOptions {
+        abortOnError false
+    }
 }
 
 // gradle -q app:dependencies to find dependency conflicts.
